@@ -29,13 +29,14 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({ onNodeClick, activeId }) =>
       let springs: any[] = [];
       
       // Configuration
-      const MAX_SPEED = 1.2;         
-      const DRAG = 0.92;             
-      const CENTER_GRAVITY = 0.002;  
-      const REPULSION_STRENGTH = 6000; 
+      const isDesktop = window.innerWidth > 800;
+      const MAX_SPEED = isDesktop ? 1.2 : 0.6;         
+      const DRAG = isDesktop ? 0.92 : 0.98;             
+      const CENTER_GRAVITY = isDesktop ? 0.004 : 0.001;  
+      const REPULSION_STRENGTH = isDesktop ? 6000 : 6000; 
       const WALL_FORCE_STRENGTH = 5.0; 
-      let WALL_DIST = 160;         
-      const COLLISION_BOX_SCALE = 0.85; 
+      let WALL_DIST = isDesktop ? 160 : 120;         
+      const COLLISION_BOX_SCALE = isDesktop ? 0.85 : 0.8; 
       const STIFFNESS = 0.01;        
       const BOUNCE_IMPULSE = 0.1;    
       
@@ -60,12 +61,12 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({ onNodeClick, activeId }) =>
         const isDesktop = window.innerWidth > 800;
 
         // Puffer zones
-        const marginLeft = isDesktop ? 60 : 30; 
-        const marginRight = isDesktop ? 40 : 30;
+        const marginLeft = isDesktop ? 100 : 40; 
+        const marginRight = isDesktop ? 40 : 40;
         
-        const marginTop = 140; 
-        const anchorMarginTop = 60;
-        const marginBottom = 80;
+        const marginTop = isDesktop ? 140 : 40; 
+        const anchorMarginTop = isDesktop ? 60 : 40;
+        const marginBottom = isDesktop ? 80 : 20;
 
         // Check active state
         const active = activeIdRef.current;
@@ -78,7 +79,7 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({ onNodeClick, activeId }) =>
         
         const visibleRatio = isProjectActive ? 0.33 : 0.66;
         const visibleWidth = isDesktop ? w * visibleRatio : w; 
-
+        
         // For global max (irrelevant nodes), allows them to go slightly behind panel
         const globalMaxWidth = w - marginRight;
 
@@ -87,18 +88,18 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({ onNodeClick, activeId }) =>
         // If Project Active (Small Graph Area): Push anchor further left (e.g., 9%).
         // If Topic/None (Large Graph Area): Keep anchor more centered in the void (e.g., 15%).
         const aXRatio = isProjectActive ? 0.09 : 0.15;
-        const aX = isDesktop ? Math.max(marginLeft + 20, w * aXRatio) : w * 0.5;
+        const aX = isDesktop ? Math.max(marginLeft + 20, w * aXRatio) : -1000; // Hide anchor off-screen on mobile
 
         bounds = {
             minX: marginLeft,
-            activeMaxX: Math.max(marginLeft + 100, visibleWidth - (isDesktop ? 50 : 30)),
-            globalMaxX: globalMaxWidth,
-            minY: marginTop,
-            maxY: h - marginBottom,
+            activeMaxX: isDesktop ? Math.max(marginLeft + 100, visibleWidth - 50) : (w - marginRight), 
+            globalMaxX: isDesktop ? globalMaxWidth : (w - marginRight),
+            minY: isDesktop ? marginTop : 20,
+            maxY: isDesktop ? (h - marginBottom) : (h - 20),
             cx: visibleWidth / 2, // Center of gravity shifts to visible area
             cy: h / 2,
             anchorX: aX,
-            anchorY: anchorMarginTop
+            anchorY: isDesktop ? anchorMarginTop : -1000 // Hide anchor off-screen on mobile
         };
       };
 
@@ -115,7 +116,8 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({ onNodeClick, activeId }) =>
           
           this.noiseX = p.random(10000);
           this.noiseY = p.random(10000);
-          this.speedMult = p.random(0.5, 1.5); 
+          const isDesktop = window.innerWidth > 800;
+          this.speedMult = p.random(0.5, isDesktop ? 1.5 : 1.2); 
           
           this.vel = p.createVector(0,0);
           this.acc = p.createVector(0,0);
@@ -126,7 +128,8 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({ onNodeClick, activeId }) =>
              this.pos = p.createVector(bounds.anchorX, bounds.anchorY);
              this.updateDimensions();
           } else if (type === 'project') {
-             this.textSize = 18;
+             const isMobile = window.innerWidth <= 800;
+             this.textSize = isMobile ? 16 : 40;
              this.pos = p.createVector(p.random(bounds.minX, bounds.activeMaxX), p.random(bounds.minY, bounds.maxY));
              p.textFont('Courier Prime');
              p.textSize(this.textSize);
@@ -134,8 +137,9 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({ onNodeClick, activeId }) =>
              this.w = p.textWidth(this.label);
              this.h = this.textSize * 1.4;
           } else {
+             const isMobile = window.innerWidth <= 800;
              const w = TOPIC_WEIGHTS[label] || 3;
-             this.textSize = w === 2 ? 14 : w === 3 ? 12 : 10;
+             this.textSize = isMobile ? (w === 2 ? 13 : w === 3 ? 12 : 11) : (w === 2 ? 32 : w === 3 ? 28 : 26);
              this.pos = p.createVector(p.random(bounds.minX, bounds.activeMaxX), p.random(bounds.minY, bounds.maxY));
              p.textFont('Inter');
              p.textSize(this.textSize);
@@ -208,10 +212,11 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({ onNodeClick, activeId }) =>
             }
 
             // 3. Random Movement
+            const isDesktop = window.innerWidth > 800;
             const t = p.frameCount * 0.003 * this.speedMult;
             const nX = p.map(p.noise(this.noiseX, t), 0, 1, -1, 1);
             const nY = p.map(p.noise(this.noiseY, t), 0, 1, -1, 1);
-            this.acc.add(p.createVector(nX, nY).mult(0.08)); 
+            this.acc.add(p.createVector(nX, nY).mult(isDesktop ? 0.08 : 0.1)); 
 
             // 4. Mouse Attraction
             if (p.mouseX > 0 && p.mouseX < p.width && p.mouseY > 0 && p.mouseY < p.height) {
@@ -240,6 +245,7 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({ onNodeClick, activeId }) =>
             this.vel.add(this.acc);
             this.vel.limit(MAX_SPEED);
             this.vel.mult(DRAG);
+
             this.pos.add(this.vel);
             this.acc.mult(0); 
 
@@ -247,28 +253,33 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({ onNodeClick, activeId }) =>
             const active = activeIdRef.current;
             const isRelevant = !active || (this.id === active) || isConnected(this.id, active);
             const myMaxX = isRelevant ? bounds.activeMaxX : bounds.globalMaxX;
+            const myMaxY = isRelevant ? bounds.maxY : (p.height - 80);
 
             const buffer = 5;
+            const bounceFactor = isDesktop ? -0.2 : -0.5;
             if (this.pos.x < bounds.minX - buffer) {
                 this.pos.x = bounds.minX - buffer;
-                this.vel.x *= -0.2; 
+                this.vel.x *= bounceFactor; 
             }
             if (this.pos.x > myMaxX + buffer) {
                 this.pos.x = myMaxX + buffer;
-                this.vel.x *= -0.2;
+                this.vel.x *= bounceFactor;
             }
             if (this.pos.y < bounds.minY) {
                 this.pos.y = bounds.minY;
-                this.vel.y *= -0.2;
+                this.vel.y *= bounceFactor;
             }
-            if (this.pos.y > bounds.maxY) {
-                this.pos.y = bounds.maxY;
-                this.vel.y *= -0.2;
+            if (this.pos.y > myMaxY) {
+                this.pos.y = myMaxY;
+                this.vel.y *= bounceFactor;
             }
         }
 
         display() {
             if (!this.pos) return;
+            
+            const isDesktop = window.innerWidth > 800;
+            if (!isDesktop && this.type === 'anchor') return; // Don't draw anchor on mobile
             
             p.push();
             const isActive = activeIdRef.current === this.id;
@@ -437,7 +448,7 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({ onNodeClick, activeId }) =>
                   if (!n.pos) continue;
                   let cx = n.type === 'anchor' ? n.pos.x + n.w/2 : n.pos.x;
                   if (Math.abs(p.mouseX - cx) < n.w/2 && Math.abs(p.mouseY - n.pos.y) < n.h/2) {
-                      onNodeClick(n.type === 'anchor' ? null : n.id);
+                      onNodeClick(n.id);
                       clickedNode = true;
                       break; 
                   }
@@ -524,14 +535,16 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({ onNodeClick, activeId }) =>
           p.cursor(hovered ? 'pointer' : 'default');
 
           // Draw Instructions Text
-          // Align with the anchor node's X position, and stick to the bottom
+          // Align with the anchor node's X position
           p.push();
           p.fill(255, 215, 0, 180); // Gold, slightly transparent
           p.textFont('Inter');
           p.textSize(10);
           p.textAlign(p.LEFT, p.BOTTOM);
-          // Use bounds.anchorX for X alignment
-          // Use height - 40 for Y position (some padding from bottom)
+          
+          const isDesktop = window.innerWidth > 800;
+          if (!isDesktop) return; 
+          
           p.text("Click a project or topic to see connections and details.", bounds.anchorX, p.height - 40);
           p.pop();
       };
