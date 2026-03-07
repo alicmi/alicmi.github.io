@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import LazyImage from './LazyImage.tsx';
 
 interface ImageSequenceViewerProps {
   images: string[];
@@ -7,19 +8,16 @@ interface ImageSequenceViewerProps {
 
 const ImageSequenceViewer: React.FC<ImageSequenceViewerProps> = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [loading, setLoading] = useState(true);
 
   if (!images || images.length === 0) return null;
 
   const goToPrev = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setLoading(true);
     setCurrentIndex(prev => (prev === 0 ? images.length - 1 : prev - 1));
   };
 
   const goToNext = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setLoading(true);
     setCurrentIndex(prev => (prev === images.length - 1 ? 0 : prev + 1));
   };
 
@@ -38,18 +36,12 @@ const ImageSequenceViewer: React.FC<ImageSequenceViewerProps> = ({ images }) => 
   return (
     <div className="flex flex-col items-center mt-8 mb-12 bg-black/20 p-4 lg:p-8 rounded-sm border border-[#FFB800]/10 shadow-inner relative group">
       <div className="relative w-full flex justify-center min-h-[300px] items-center">
-        {loading && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-[#FFB800] font-mono text-xs gap-4 z-10">
-            <Loader2 className="animate-spin w-8 h-8 opacity-70" />
-            <span>Loading Image...</span>
-          </div>
-        )}
         
-        <img 
+        <LazyImage 
           src={getDirectImageUrl(images[currentIndex])} 
           alt={`Sequence page ${currentIndex + 1}`} 
-          className={`max-w-full h-auto rounded-sm shadow-2xl transition-opacity duration-300 ${loading ? 'opacity-0' : 'opacity-100'}`}
-          onLoad={() => setLoading(false)}
+          className="max-w-full rounded-sm shadow-2xl"
+          headerImagePosition="h-auto"
           draggable={false}
           onContextMenu={(e) => e.preventDefault()}
         />
