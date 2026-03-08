@@ -115,7 +115,7 @@ const App: React.FC = () => {
           z-10 shadow-[0_-10px_30px_rgba(0,0,0,0.2)] md:shadow-[-10px_0_30px_rgba(0,0,0,0.2)] 
           transition-all duration-700 ease-in-out
           w-full
-          ${activeProjectId ? 'md:w-2/3' : 'md:w-1/3'}
+          ${activeProjectId ? 'h-[60vh] md:h-full md:w-2/3' : 'h-[40vh] md:h-full md:w-1/3'}
       `}>
         <ContentPanel 
             activeProject={activeProject} 
