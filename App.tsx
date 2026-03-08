@@ -12,36 +12,27 @@ const App: React.FC = () => {
     ? PROJECTS.find(p => p.id === activeProjectId) || null 
     : null;
 
-  // activeId passed to graph is either project ID or topic string
   const graphActiveId = activeProjectId || activeTopic;
 
   const handleNodeClick = useCallback((id: string | null) => {
     if (!id) {
-        // Clicking background clears everything
         setActiveProjectId(null);
         setActiveTopic(null);
         setShowCV(false);
         return;
     }
-
-    // Special case for root node (Alina Schmeiß)
     if (id === 'root') {
         setActiveProjectId(null);
         setActiveTopic(null);
         setShowCV(true);
         return;
     }
-
-    // Clicking a node always clears CV mode
     setShowCV(false);
-
-    // Check if ID is a project
     const isProject = PROJECTS.some(p => p.id === id);
     if (isProject) {
         setActiveProjectId(id);
         setActiveTopic(null);
     } else {
-        // Must be a topic
         setActiveProjectId(null);
         setActiveTopic(id);
     }
@@ -54,9 +45,7 @@ const App: React.FC = () => {
           setShowCV(true);
           return;
       }
-
       setShowCV(false);
-      
       const isProject = PROJECTS.some(p => p.id === id);
       if (isProject) {
           setActiveProjectId(id);
@@ -95,15 +84,16 @@ const App: React.FC = () => {
 
       {/* 
         Network Visualization 
-        Absolute background to allow content panel to overlap
+        On mobile: Restricted to top 60% of screen.
+        On desktop: Full screen background.
       */}
-      <div className="absolute inset-0 z-0 w-full h-full">
+      <div className="absolute top-0 left-0 w-full h-[60vh] md:h-full z-0">
         <NetworkGraph onNodeClick={handleNodeClick} activeId={graphActiveId} />
       </div>
 
       {/* 
         Content Panel
-        On mobile: Overlaps map at the bottom. 40vh default, 60vh for projects.
+        On mobile: Overlaps map at the bottom.
         On desktop: Right overlay.
       */}
       <div className={`
