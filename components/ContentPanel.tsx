@@ -1,8 +1,8 @@
 import React from 'react';
 import { Project, MediaItem } from '../types';
 import { PROJECTS, CONNECTIONS, TOPIC_DESCRIPTIONS, TOPIC_GALLERIES, TOPIC_VIDEOS } from '../constants';
-import ImageSequenceViewer from './ImageSequenceViewer.tsx';
-import LazyImage from './LazyImage.tsx';
+import ImageSequenceViewer from './ImageSequenceViewer';
+import LazyImage from './LazyImage';
 
 interface ContentPanelProps {
   activeProject: Project | null;
