@@ -107,8 +107,7 @@ const App: React.FC = () => {
         On desktop: Right overlay.
       */}
       <div className={`
-          h-[25vh] md:h-full 
-          relative md:absolute md:right-0 md:top-0 md:left-auto
+          absolute bottom-0 left-0 right-0 md:top-0 md:left-auto
           z-10 shadow-[0_-10px_30px_rgba(0,0,0,0.2)] md:shadow-[-10px_0_30px_rgba(0,0,0,0.2)] 
           transition-all duration-700 ease-in-out
           w-full
