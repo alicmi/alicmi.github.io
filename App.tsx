@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import NetworkGraph from './components/NetworkGraph.tsx';
-import NetworkGraph from './components/NetworkGraph';
-import ContentPanel from './components/ContentPanel';
+import ContentPanel from './components/ContentPanel.tsx';
+import { PROJECTS } from './constants';
 
 const App: React.FC = () => {
   const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
@@ -12,27 +12,36 @@ const App: React.FC = () => {
     ? PROJECTS.find(p => p.id === activeProjectId) || null 
     : null;
 
+  // activeId passed to graph is either project ID or topic string
   const graphActiveId = activeProjectId || activeTopic;
 
   const handleNodeClick = useCallback((id: string | null) => {
     if (!id) {
+        // Clicking background clears everything
         setActiveProjectId(null);
         setActiveTopic(null);
         setShowCV(false);
         return;
     }
+
+    // Special case for root node (Alina Schmeiß)
     if (id === 'root') {
         setActiveProjectId(null);
         setActiveTopic(null);
         setShowCV(true);
         return;
     }
+
+    // Clicking a node always clears CV mode
     setShowCV(false);
+
+    // Check if ID is a project
     const isProject = PROJECTS.some(p => p.id === id);
     if (isProject) {
         setActiveProjectId(id);
         setActiveTopic(null);
     } else {
+        // Must be a topic
         setActiveProjectId(null);
         setActiveTopic(id);
     }
@@ -45,7 +54,9 @@ const App: React.FC = () => {
           setShowCV(true);
           return;
       }
+
       setShowCV(false);
+      
       const isProject = PROJECTS.some(p => p.id === id);
       if (isProject) {
           setActiveProjectId(id);
@@ -63,7 +74,7 @@ const App: React.FC = () => {
   }, []);
 
   return (
-     <div className="relative h-screen w-screen overflow-hidden bg-[#114552]">
+    <div className="flex flex-col md:block h-screen w-screen overflow-hidden bg-[#114552] relative">
       {/* Mobile Header Section */}
       <div className="md:hidden flex flex-col bg-[#114552] z-[100] relative">
         {/* Disclaimer */}
@@ -84,20 +95,20 @@ const App: React.FC = () => {
 
       {/* 
         Network Visualization 
-        On mobile: Restricted to top 60% of screen.
-        On desktop: Full screen background.
+        Absolute background to allow content panel to overlap
       */}
-      <div className="absolute top-0 left-0 w-full h-[60vh] md:h-full z-0">
+      <div className="absolute inset-0 z-0 w-full h-full">
         <NetworkGraph onNodeClick={handleNodeClick} activeId={graphActiveId} />
       </div>
 
       {/* 
         Content Panel
-        On mobile: Overlaps map at the bottom.
+        On mobile: Overlaps map at the bottom. 40vh default, 60vh for projects.
         On desktop: Right overlay.
       */}
       <div className={`
-          absolute bottom-0 left-0 right-0 md:top-0 md:right-0 md:left-auto
+          h-[25vh] md:h-full 
+          relative md:absolute md:right-0 md:top-0 md:left-auto
           z-10 shadow-[0_-10px_30px_rgba(0,0,0,0.2)] md:shadow-[-10px_0_30px_rgba(0,0,0,0.2)] 
           transition-all duration-700 ease-in-out
           w-full
