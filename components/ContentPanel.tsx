@@ -158,7 +158,7 @@ const ContentPanel: React.FC<ContentPanelProps> = ({ activeProject, activeTopic,
             <div className="space-y-12 relative z-10">
                  {/* Section 1: High School */}
                  <div className="relative group">
-                     <h2 className="text-base font-bold font-mono text-[#082129] mb-2 group-hover:text-[#FFB800] transition-colors">High school</h2>
+                     <h2 className="text-base font-bold font-mono text-[#!082129] mb-2 group-hover:text-[#FFB800] transition-colors">High school</h2>
                      <p className="text-[9px] lg:text-xs font-mono text-[#FFB800]/70 mb-3 tracking-wider">2013-2021</p>
                      <ul className="list-none space-y-2 text-xs lg:text-[11px] font-mono opacity-90 border-l border-[#FFB800]/30 pl-4">
                          <li className="flex items-start">
@@ -175,7 +175,7 @@ const ContentPanel: React.FC<ContentPanelProps> = ({ activeProject, activeTopic,
 
                  {/* Section 2: Internships */}
                  <div className="relative group pt-4">
-                     <h2 className="text-base font-bold font-mono text-[#082129] mb-2 group-hover:text-[#FFB800] transition-colors">Internships and personal volunteering</h2>
+                     <h2 className="text-base font-bold font-mono text-[#!082129] mb-2 group-hover:text-[#FFB800] transition-colors">Internships and personal volunteering</h2>
                      {/* Removed date range as requested */}
                      <ul className="list-none space-y-2 text-xs lg:text-[11px] font-mono opacity-90 border-l border-[#FFB800]/30 pl-4 mt-3">
                          <li className="flex items-start">
@@ -202,7 +202,7 @@ const ContentPanel: React.FC<ContentPanelProps> = ({ activeProject, activeTopic,
 
                  {/* Section 3: Education */}
                  <div className="relative group pt-4">
-                     <h2 className="text-base font-bold font-mono text-[#082129] mb-2 group-hover:text-[#FFB800] transition-colors">Academic further education</h2>
+                     <h2 className="text-base font-bold font-mono text-[#!082129] mb-2 group-hover:text-[#FFB800] transition-colors">Academic further education</h2>
                      
                      <div className="mb-6">
                         <p className="text-[9px] lg:text-xs font-mono text-[#FFB800]/70 mb-2 tracking-wider">2022-2024</p>
