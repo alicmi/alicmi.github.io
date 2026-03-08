@@ -428,7 +428,7 @@ const ContentPanel: React.FC<ContentPanelProps> = ({ activeProject, activeTopic,
         </div>
       ) : (
         <div className="flex flex-col justify-start h-full animate-fade-in relative">
-           <div className="font-mono text-[9px] lg:text-[13px] leading-relaxed opacity-90 space-y-2 lg:space-y-4">
+           <div className="font-mono text-[9px] lg:text-[11px] leading-relaxed opacity-90 space-y-2 lg:space-y-4">
              <p>
                In my head, my work, and my life, nothing exists in isolation. I believe that we are all part of a living system — an interconnected web.
              </p>
