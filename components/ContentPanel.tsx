@@ -237,7 +237,7 @@ const ContentPanel: React.FC<ContentPanelProps> = ({ activeProject, activeTopic,
     <div 
       onClick={(e) => e.stopPropagation()}
       className={`
-        h-full flex flex-col p-4 lg:p-16 overflow-y-auto backdrop-blur-[2px] 
+        h-full flex flex-col p-4 pb-24 lg:p-16 overflow-y-auto backdrop-blur-[2px] 
         transition-all duration-500 custom-scrollbar z-10
         ${isDefaultPage 
           ? 'bg-gradient-to-r from-[#F0F7F8]/60 via-[#F0F7F8] via-3% to-[#F0F7F8] text-[#082129]' 
