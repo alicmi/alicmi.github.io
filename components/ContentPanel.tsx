@@ -417,7 +417,7 @@ const ContentPanel: React.FC<ContentPanelProps> = ({ activeProject, activeTopic,
                             )}
                             <div className="px-4 pb-4">
                                 <h3 className="text-base font-light group-hover:text-[#FFB800] transition-colors group-hover:underline decoration-[#FFB800]/50 underline-offset-4">{p.label}</h3>
-                                <p className="text-[10px] lg:text-[11px] font-mono opacity-60 mt-1 line-clamp-2">{p.text}</p>
+                                <p className="text-[11px] lg:text-[12px] font-mono opacity-60 mt-1 line-clamp-2">{p.text}</p>
                             </div>
                         </div>
                     ))
