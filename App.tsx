@@ -95,19 +95,16 @@ const App: React.FC = () => {
 
       {/* 
         Network Visualization 
-        On mobile: Starts under header, fills remaining space
-        On desktop: Full screen absolute background
+        Absolute background to allow content panel to overlap
       */}
-      <div className="flex-1 md:absolute md:inset-0 z-0 w-full">
+      <div className="absolute inset-0 z-0 w-full h-full">
         <NetworkGraph onNodeClick={handleNodeClick} activeId={graphActiveId} />
       </div>
 
       {/* 
         Content Panel
-        On mobile: Bottom 25%
-        On desktop: Absolute right overlay.
-          - Default: w-1/3
-          - Active Project: w-2/3
+        On mobile: Overlaps map at the bottom. 40vh default, 60vh for projects.
+        On desktop: Right overlay.
       */}
       <div className={`
           h-[25vh] md:h-full 
