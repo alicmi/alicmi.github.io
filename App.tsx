@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import NetworkGraph from './components/NetworkGraph.tsx';
-import ContentPanel from './components/ContentPanel.tsx';
-import { PROJECTS } from './constants';
+import NetworkGraph from './components/NetworkGraph';
+import ContentPanel from './components/ContentPanel';
 
 const App: React.FC = () => {
   const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
@@ -63,7 +63,7 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col md:block h-screen w-screen overflow-hidden bg-[#114552] relative">
+     <div className="relative h-screen w-screen overflow-hidden bg-[#114552]">
       {/* Mobile Header Section */}
       <div className="md:hidden flex flex-col bg-[#114552] z-[100] relative">
         {/* Disclaimer */}
@@ -97,7 +97,7 @@ const App: React.FC = () => {
         On desktop: Right overlay.
       */}
       <div className={`
-          absolute bottom-0 left-0 right-0 md:top-0 md:left-auto
+          absolute bottom-0 left-0 right-0 md:top-0 md:right-0 md:left-auto
           z-10 shadow-[0_-10px_30px_rgba(0,0,0,0.2)] md:shadow-[-10px_0_30px_rgba(0,0,0,0.2)] 
           transition-all duration-700 ease-in-out
           w-full
