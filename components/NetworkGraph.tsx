@@ -79,9 +79,7 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({ onNodeClick, activeId }) =>
         
         const visibleRatio = isProjectActive ? 0.33 : 0.66;
         const visibleWidth = isDesktop ? w * visibleRatio : w; 
-        
-        // For global max (irrelevant nodes), allows them to go slightly behind panel
-        const globalMaxWidth = w - marginRight;
+        const mobileVisibleHeight = h * 0.6;
 
         // Anchor X calculation:
         // We want movement! 
@@ -97,7 +95,7 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({ onNodeClick, activeId }) =>
             minY: isDesktop ? marginTop : 20,
             maxY: isDesktop ? (h - marginBottom) : (h - 20),
             cx: visibleWidth / 2, // Center of gravity shifts to visible area
-            cy: h / 2,
+            cy: isDesktop ? h / 2 : (120 + mobileVisibleHeight) / 2,
             anchorX: aX,
             anchorY: isDesktop ? anchorMarginTop : -1000 // Hide anchor off-screen on mobile
         };
