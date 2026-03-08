@@ -129,7 +129,7 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({ onNodeClick, activeId }) =>
              this.updateDimensions();
           } else if (type === 'project') {
              const isMobile = window.innerWidth <= 800;
-             this.textSize = isMobile ? 16 : 40;
+             this.textSize = isMobile ? 14 : 18;
              this.pos = p.createVector(p.random(bounds.minX, bounds.activeMaxX), p.random(bounds.minY, bounds.maxY));
              p.textFont('Courier Prime');
              p.textSize(this.textSize);
@@ -139,7 +139,7 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({ onNodeClick, activeId }) =>
           } else {
              const isMobile = window.innerWidth <= 800;
              const w = TOPIC_WEIGHTS[label] || 3;
-             this.textSize = isMobile ? (w === 2 ? 13 : w === 3 ? 12 : 11) : (w === 2 ? 32 : w === 3 ? 28 : 26);
+             this.textSize = isMobile ? (w === 2 ? 11 : w === 3 ? 10 : 9) : (w === 2 ? 14 : w === 3 ? 12 : 10);
              this.pos = p.createVector(p.random(bounds.minX, bounds.activeMaxX), p.random(bounds.minY, bounds.maxY));
              p.textFont('Inter');
              p.textSize(this.textSize);
