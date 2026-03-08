@@ -249,7 +249,7 @@ const ContentPanel: React.FC<ContentPanelProps> = ({ activeProject, activeTopic,
         <div className="animate-fade-in-up flex flex-col pb-10">
            
            {/* 1. Sticky Header / Title & Meta */}
-           <div className="sticky top-[-1rem] lg:top-[-4rem] pt-2 lg:pt-4 pb-2 lg:pb-4 z-20 backdrop-blur-md bg-[#0C323D]/80 mb-6 border-b border-[#FFB800]/20 -mx-4 px-4 shadow-sm">
+           <div className="relative md:sticky md:top-[-4rem] pt-2 lg:pt-4 pb-2 lg:pb-4 z-20 backdrop-blur-md bg-[#0C323D]/80 mb-6 border-b border-[#FFB800]/20 -mx-4 px-4 shadow-sm">
              <h1 className="text-base lg:text-2xl font-light text-[#FFB800] tracking-widest uppercase m-0">
                {activeProject.label}
                {activeProject.id === 'p7' && (
